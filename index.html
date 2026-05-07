@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Nura AI</title>
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+
+  width:100vw;
+  height:100vh;
+
+  overflow:hidden;
+
+  background:
+  radial-gradient(
+    circle at top,
+    #171827,
+    #090b16 65%
+  );
+
+  font-family:Inter,sans-serif;
+}
+
+/* =========================
+   CHATBOX
+========================= */
+
+.chat{
+
+  position:fixed;
+
+  right:40px;
+  bottom:130px;
+
+  width:375px;
+  height:600px;
+
+  border-radius:34px;
+
+  overflow:hidden;
+
+  isolation:isolate;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transform:
+  translateY(30px)
+  scale(.92);
+
+  transition:
+  all 1s cubic-bezier(.19,1,.22,1);
+
+  background:
+  rgba(255,255,255,.06);
+
+  border:
+  1px solid rgba(255,255,255,.08);
+
+  backdrop-filter:blur(30px);
+
+  z-index:20;
+}
+
+.chat.show{
+
+  opacity:1;
+
+  pointer-events:auto;
+
+  transform:
+  translateY(0px)
+  scale(1);
+}
+
+/* =========================
+   VIDEO
+========================= */
+
+.video-wrap{
+
+  position:absolute;
+  inset:0;
+
+  z-index:1;
+
+  overflow:hidden;
+
+  border-radius:34px;
+}
+
+.bg-video{
+
+  position:absolute;
+
+  top:0;
+  left:0;
+
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+
+  opacity:.42;
+
+  filter:
+  blur(.5px)
+  saturate(1.4)
+  brightness(.9);
+
+  transform:scale(1.15);
+
+  pointer-events:none;
+}
+
+/* =========================
+   GRADIENT
+========================= */
+
+.gradient{
+
+  position:absolute;
+  inset:0;
+
+  z-index:2;
+
+  background:
+  linear-gradient(
+    180deg,
+    rgba(227,127,145,.48) 7.37%,
+    rgba(215,112,144,.44) 44.03%,
+    rgba(210,116,150,.40) 62.73%,
+    rgba(72,63,96,.52) 85.17%
+  );
+
+  backdrop-filter:
+  blur(8px);
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+
+  position:relative;
+
+  z-index:10;
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  padding:20px 22px;
+
+  color:white;
+
+  border-bottom:
+  1px solid rgba(255,255,255,.12);
+}
+
+.close{
+
+  cursor:pointer;
+
+  opacity:.8;
+}
+
+/* =========================
+   MESSAGES
+========================= */
+
+.messages{
+
+  position:relative;
+
+  z-index:10;
+
+  height:520px;
+
+  overflow-y:auto;
+
+  padding:22px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:18px;
+}
+
+.messages::-webkit-scrollbar{
+  display:none;
+}
+
+/* =========================
+   BUBBLES
+========================= */
+
+.bot-row,
+.user-row{
+
+  display:flex;
+
+  flex-direction:column;
+}
+
+.user-row{
+  align-items:flex-end;
+}
+
+.bot-bubble{
+
+  max-width:82%;
+
+  padding:16px 18px;
+
+  border-radius:22px;
+
+  background:
+  rgba(255,255,255,.08);
+
+  border:
+  1px solid rgba(255,255,255,.08);
+
+  color:white;
+
+  line-height:1.5;
+
+  backdrop-filter:
+  blur(20px);
+}
+
+.user-bubble{
+
+  max-width:72%;
+
+  padding:14px 18px;
+
+  border-radius:22px;
+
+  background:
+  rgba(139,92,246,.55);
+
+  color:white;
+}
+
+.msg-time{
+
+  color:white;
+
+  opacity:.5;
+
+  font-size:11px;
+
+  margin-top:6px;
+
+  margin-left:6px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.choice-group{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+}
+
+.choice-group button{
+
+  border:none;
+
+  padding:12px 16px;
+
+  border-radius:999px;
+
+  background:
+  rgba(139,92,246,.45);
+
+  color:white;
+
+  cursor:pointer;
+
+  border:
+  1px solid rgba(255,255,255,.1);
+
+  backdrop-filter:
+  blur(12px);
+
+  transition:.3s;
+}
+
+.choice-group button:hover{
+
+  transform:
+  translateY(-2px);
+}
+
+/* =========================
+   ALERT
+========================= */
+
+.alert{
+
+  padding:15px 18px;
+
+  border-radius:20px;
+
+  background:
+  rgba(168,85,247,.18);
+
+  color:white;
+}
+
+/* =========================
+   ANIMATION
+========================= */
+
+.fade{
+
+  animation:
+  fadeUp .45s ease;
+}
+
+@keyframes fadeUp{
+
+  from{
+    opacity:0;
+    transform:translateY(10px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* =========================
+   CRYSTAL
+========================= */
+
+.crystal{
+
+  position:fixed;
+
+  right:34px;
+  bottom:34px;
+
+  width:84px;
+  height:84px;
+
+  z-index:30;
+
+  cursor:pointer;
+
+  animation:
+  float 4s ease-in-out infinite;
+}
+
+.crystal-mask{
+
+  position:relative;
+
+  width:100%;
+  height:100%;
+}
+
+.front,
+.back{
+
+  position:absolute;
+
+  inset:0;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+}
+
+.front img,
+.back img{
+
+  width:100%;
+  height:100%;
+
+  object-fit:contain;
+}
+
+/* FRONT */
+
+.front{
+
+  overflow:hidden;
+
+  transition:1s;
+}
+
+.active .front{
+
+  opacity:0;
+
+  transform:
+  scale(.95)
+  rotate(8deg);
+}
+
+/* SHINE */
+
+.front::before{
+
+  content:"";
+
+  position:absolute;
+
+  top:-120%;
+  left:-40%;
+
+  width:70%;
+  height:300%;
+
+  background:
+  linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.85),
+    transparent
+  );
+
+  transform:
+  rotate(25deg);
+
+  animation:
+  shine 3.8s infinite;
+}
+
+@keyframes shine{
+
+  0%{
+    left:-60%;
+    opacity:0;
+  }
+
+  10%{
+    opacity:1;
+  }
+
+  40%{
+    left:140%;
+    opacity:0;
+  }
+
+  100%{
+    left:140%;
+    opacity:0;
+  }
+}
+
+/* BACK */
+
+.back{
+
+  opacity:0;
+
+  transform:scale(.9);
+
+  transition:1.2s;
+}
+
+.active .back{
+
+  opacity:1;
+
+  transform:
+  scale(1)
+  rotate(4deg);
+}
+
+@keyframes float{
+
+  0%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-7px);
+  }
+
+  100%{
+    transform:translateY(0);
+  }
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+  .chat{
+
+    left:50%;
+    right:auto;
+
+    transform:
+    translateX(-50%)
+    translateY(30px)
+    scale(.92);
+  }
+
+  .chat.show{
+
+    transform:
+    translateX(-50%)
+    translateY(0)
+    scale(1);
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- CHAT -->
+
+<div class="chat" id="chat">
+
+  <!-- VIDEO -->
+
+  <div class="video-wrap">
+
+    <video
+      class="bg-video"
+      autoplay
+      muted
+      loop
+      playsinline>
+
+      <source
+        src="./bg-video.mp4"
+        type="video/mp4">
+
+    </video>
+
+  </div>
+
+  <!-- GLASS -->
+
+  <div class="gradient"></div>
+
+  <!-- HEADER -->
+
+  <div class="header">
+
+    <h2>Nura AI</h2>
+
+    <div class="close" id="closeBtn">
+      Close
+    </div>
+
+  </div>
+
+  <!-- MESSAGES -->
+
+  <div class="messages" id="messages">
+
+    <div class="bot-row fade">
+
+      <div class="bot-bubble">
+        Hi, I’m Nura. I’ll help you get into
+        the right state right now.
+      </div>
+
+      <div class="msg-time">
+        now
+      </div>
+
+    </div>
+
+    <div class="choice-group fade">
+
+      <button onclick="reply('Go straight to a track',2)">
+        Go straight to a track
+      </button>
+
+      <button onclick="reply('Quick reset first',3)">
+        Quick reset first
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- CRYSTAL -->
+
+<div class="crystal" id="crystal">
+
+  <div class="crystal-mask">
+
+    <!-- FRONT -->
+
+    <div class="front">
+
+      <img
+        src="./front-diamond.svg"
+        alt="">
+
+    </div>
+
+    <!-- BACK -->
+
+    <div class="back">
+
+      <img
+        src="./back-diamond.svg"
+        alt="">
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- AUDIO -->
+
+<audio
+  id="openSound"
+  preload="auto">
+
+  <source
+    src="./open-sound.mp3"
+    type="audio/mp3">
+
+</audio>
+
+<script>
+
+const crystal =
+document.getElementById("crystal");
+
+const chat =
+document.getElementById("chat");
+
+const closeBtn =
+document.getElementById("closeBtn");
+
+const messages =
+document.getElementById("messages");
+
+const openSound =
+document.getElementById("openSound");
+
+/* OPEN */
+
+crystal.addEventListener("click", async ()=>{
+
+  crystal.classList.toggle("active");
+
+  chat.classList.toggle("show");
+
+  try{
+
+    openSound.currentTime = 0;
+
+    await openSound.play();
+
+  }catch(err){}
+
+});
+
+/* CLOSE */
+
+closeBtn.addEventListener("click",()=>{
+
+  chat.classList.remove("show");
+
+  crystal.classList.remove("active");
+
+});
+
+/* BOT MESSAGE */
+
+function addBotMessage(text){
+
+  const wrap =
+  document.createElement("div");
+
+  wrap.className =
+  "bot-row fade";
+
+  wrap.innerHTML = `
+
+    <div class="bot-bubble">
+      ${text}
+    </div>
+
+    <div class="msg-time">
+      now
+    </div>
+
+  `;
+
+  messages.appendChild(wrap);
+
+  scrollBottom();
+}
+
+/* USER */
+
+function addUserMessage(text){
+
+  const wrap =
+  document.createElement("div");
+
+  wrap.className =
+  "user-row fade";
+
+  wrap.innerHTML = `
+
+    <div class="user-bubble">
+      ${text}
+    </div>
+
+  `;
+
+  messages.appendChild(wrap);
+
+  scrollBottom();
+}
+
+/* BUTTONS */
+
+function addChoices(buttons){
+
+  const group =
+  document.createElement("div");
+
+  group.className =
+  "choice-group fade";
+
+  buttons.forEach(btn=>{
+
+    const button =
+    document.createElement("button");
+
+    button.innerText =
+    btn.text;
+
+    button.onclick = ()=>{
+
+      reply(btn.text,btn.next);
+
+    };
+
+    group.appendChild(button);
+
+  });
+
+  messages.appendChild(group);
+
+  scrollBottom();
+}
+
+function removeChoices(){
+
+  document
+  .querySelectorAll(".choice-group")
+  .forEach(el=>el.remove());
+}
+
+/* FLOW */
+
+function reply(text,next){
+
+  removeChoices();
+
+  addUserMessage(text);
+
+  setTimeout(()=>{
+
+    if(next===2){
+
+      addBotMessage(
+        "What kind of energy do you want right now?"
+      );
+
+      addChoices([
+
+        {
+          text:"Focus",
+          next:4
+        },
+
+        {
+          text:"Calm",
+          next:4
+        },
+
+        {
+          text:"Energy",
+          next:4
+        }
+
+      ]);
+    }
+
+    if(next===3){
+
+      addBotMessage(
+        "Alright. How much time do you have?"
+      );
+
+      addChoices([
+
+        {
+          text:"1 min",
+          next:5
+        },
+
+        {
+          text:"5 min",
+          next:5
+        },
+
+        {
+          text:"10 min",
+          next:5
+        }
+
+      ]);
+    }
+
+    if(next===4){
+
+      addBotMessage(
+        "Perfect. I found a track that fits your current state."
+      );
+
+      addChoices([
+
+        {
+          text:"Play now",
+          next:6
+        }
+
+      ]);
+    }
+
+    if(next===5){
+
+      addBotMessage(
+        "Take one slow breath in. Then release gently."
+      );
+
+      addChoices([
+
+        {
+          text:"Continue",
+          next:6
+        }
+
+      ]);
+    }
+
+    if(next===6){
+
+      addBotMessage(
+        "Your nervous system is beginning to slow down now."
+      );
+
+      const alert =
+      document.createElement("div");
+
+      alert.className =
+      "alert fade";
+
+      alert.innerHTML =
+      "✨ Your reset session is ready";
+
+      messages.appendChild(alert);
+
+      addChoices([
+
+        {
+          text:"Start Session",
+          next:7
+        }
+
+      ]);
+    }
+
+  },700);
+}
+
+/* SCROLL */
+
+function scrollBottom(){
+
+  messages.scrollTop =
+  messages.scrollHeight;
+}
+
+</script>
+
+</body>
+</html>
