@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"/>
 
 <title>Nura AI</title>
 
@@ -21,14 +24,33 @@ body{
 
   overflow:hidden;
 
-  background:
-  radial-gradient(
-    circle at top,
-    #171827,
-    #090b16 65%
-  );
-
   font-family:Inter,sans-serif;
+
+  position:relative;
+
+  background:#090b16;
+}
+
+/* =========================
+   PAGE BACKGROUND
+========================= */
+
+.page-bg{
+
+  position:fixed;
+
+  inset:0;
+
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+
+  z-index:-2;
+
+  opacity:1;
+
+  pointer-events:none;
 }
 
 /* =========================
@@ -40,7 +62,7 @@ body{
   position:fixed;
 
   right:40px;
-  bottom:130px;
+  bottom:170px;
 
   width:375px;
   height:600px;
@@ -62,13 +84,32 @@ body{
   transition:
   all 1s cubic-bezier(.19,1,.22,1);
 
+  /* TRUE GLASS */
+
   background:
-  rgba(255,255,255,.06);
+  rgba(255,255,255,.015);
 
   border:
-  1px solid rgba(255,255,255,.08);
+  1px solid rgba(255,255,255,.12);
 
-  backdrop-filter:blur(30px);
+  backdrop-filter:
+  blur(16px)
+  saturate(160%);
+
+  -webkit-backdrop-filter:
+  blur(16px)
+  saturate(160%);
+
+  box-shadow:
+
+    0 4px 114px
+    rgba(71,64,98,.52),
+
+    0 20px 60px
+    rgba(0,0,0,.18),
+
+    inset 0 1px 0
+    rgba(255,255,255,.05);
 
   z-index:20;
 }
@@ -112,20 +153,26 @@ body{
 
   object-fit:cover;
 
-  opacity:.42;
+  /* VERY SOFT */
+
+  opacity:.08;
 
   filter:
-  blur(.5px)
-  saturate(1.4)
-  brightness(.9);
 
-  transform:scale(1.15);
+    saturate(.85)
+    brightness(1.05)
+    contrast(.90);
+
+  transform:scale(1.08);
 
   pointer-events:none;
+
+  mix-blend-mode:
+  soft-light;
 }
 
 /* =========================
-   GRADIENT
+   GLASS GRADIENT
 ========================= */
 
 .gradient{
@@ -135,17 +182,28 @@ body{
 
   z-index:2;
 
+  border-radius:
+  0 0 34px 34px;
+
+  pointer-events:none;
+
   background:
   linear-gradient(
     180deg,
-    rgba(227,127,145,.48) 7.37%,
-    rgba(215,112,144,.44) 44.03%,
-    rgba(210,116,150,.40) 62.73%,
-    rgba(72,63,96,.52) 85.17%
+
+    rgba(255,255,255,.06) 0%,
+
+    rgba(238,215,219,.10) 15%,
+
+    rgba(227,127,145,.14) 38%,
+
+    rgba(215,112,144,.12) 70%,
+
+    rgba(215,112,144,.08) 100%
   );
 
-  backdrop-filter:
-  blur(8px);
+  mix-blend-mode:
+  screen;
 }
 
 /* =========================
@@ -168,15 +226,42 @@ body{
 
   color:white;
 
+  border-radius:
+  12px 12px 0 0;
+
   border-bottom:
-  1px solid rgba(255,255,255,.12);
+  1px solid #AD788D;
+
+  background:
+  rgba(172,74,120,.85);
+
+  backdrop-filter:
+  blur(5px);
+
+  -webkit-backdrop-filter:
+  blur(5px);
+}
+
+.header h2{
+
+  font-size:18px;
+  font-weight:700;
 }
 
 .close{
 
   cursor:pointer;
 
-  opacity:.8;
+  opacity:.82;
+
+  font-size:14px;
+
+  transition:.3s;
+}
+
+.close:hover{
+
+  opacity:1;
 }
 
 /* =========================
@@ -207,7 +292,7 @@ body{
 }
 
 /* =========================
-   BUBBLES
+   CHAT BUBBLES
 ========================= */
 
 .bot-row,
@@ -231,7 +316,7 @@ body{
   border-radius:22px;
 
   background:
-  rgba(255,255,255,.08);
+  rgba(255,255,255,.10);
 
   border:
   1px solid rgba(255,255,255,.08);
@@ -241,7 +326,10 @@ body{
   line-height:1.5;
 
   backdrop-filter:
-  blur(20px);
+  blur(12px);
+
+  box-shadow:
+  inset 0 1px 0 rgba(255,255,255,.04);
 }
 
 .user-bubble{
@@ -253,16 +341,22 @@ body{
   border-radius:22px;
 
   background:
-  rgba(139,92,246,.55);
+  rgba(139,92,246,.16);
+
+  border:
+  1px solid rgba(255,255,255,.08);
 
   color:white;
+
+  backdrop-filter:
+  blur(10px);
 }
 
 .msg-time{
 
   color:white;
 
-  opacity:.5;
+  opacity:.45;
 
   font-size:11px;
 
@@ -293,25 +387,32 @@ body{
   border-radius:999px;
 
   background:
-  rgba(139,92,246,.45);
+  rgba(139,92,246,.16);
+
+  border:
+  1px solid rgba(255,255,255,.08);
 
   color:white;
 
   cursor:pointer;
 
-  border:
-  1px solid rgba(255,255,255,.1);
-
   backdrop-filter:
-  blur(12px);
+  blur(10px);
 
-  transition:.3s;
+  transition:
+  all .35s ease;
+
+  box-shadow:
+  inset 0 1px 0 rgba(255,255,255,.04);
 }
 
 .choice-group button:hover{
 
   transform:
   translateY(-2px);
+
+  background:
+  rgba(139,92,246,.24);
 }
 
 /* =========================
@@ -325,9 +426,15 @@ body{
   border-radius:20px;
 
   background:
-  rgba(168,85,247,.18);
+  rgba(168,85,247,.12);
+
+  border:
+  1px solid rgba(255,255,255,.07);
 
   color:white;
+
+  backdrop-filter:
+  blur(12px);
 }
 
 /* =========================
@@ -362,7 +469,10 @@ body{
   position:fixed;
 
   right:34px;
-  bottom:34px;
+
+  /* MOVED UP */
+
+  bottom:78px;
 
   width:84px;
   height:84px;
@@ -510,7 +620,9 @@ body{
   }
 }
 
-/* MOBILE */
+/* =========================
+   MOBILE
+========================= */
 
 @media(max-width:600px){
 
@@ -518,6 +630,15 @@ body{
 
     left:50%;
     right:auto;
+
+    bottom:140px;
+
+    width:92vw;
+    max-width:375px;
+
+    height:600px;
+
+    border-radius:28px;
 
     transform:
     translateX(-50%)
@@ -532,12 +653,36 @@ body{
     translateY(0)
     scale(1);
   }
+
+  .messages{
+
+    height:520px;
+  }
+
+  .crystal{
+
+    right:20px;
+
+    /* MOVED UP */
+
+    bottom:88px;
+
+    width:74px;
+    height:74px;
+  }
 }
 
 </style>
 </head>
 
 <body>
+
+<!-- PAGE BACKGROUND -->
+
+<img
+  src="./page-bg.png"
+  class="page-bg"
+  alt="">
 
 <!-- CHAT -->
 
@@ -617,8 +762,6 @@ body{
 
   <div class="crystal-mask">
 
-    <!-- FRONT -->
-
     <div class="front">
 
       <img
@@ -626,8 +769,6 @@ body{
         alt="">
 
     </div>
-
-    <!-- BACK -->
 
     <div class="back">
 
@@ -698,7 +839,7 @@ closeBtn.addEventListener("click",()=>{
 
 });
 
-/* BOT MESSAGE */
+/* BOT */
 
 function addBotMessage(text){
 
