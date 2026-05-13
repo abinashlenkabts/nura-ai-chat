@@ -44,7 +44,7 @@ body{
   width:100%;
   height:100%;
 
-  object-fit:cover;
+  object-fit:contain;
 
   z-index:-2;
 
@@ -62,12 +62,12 @@ body{
   position:fixed;
 
   right:40px;
-  bottom:170px;
+  bottom:210px;
 
   width:375px;
-  height:600px;
+  height:450px;
 
-  border-radius:34px;
+  border-radius:45px;
 
   overflow:hidden;
 
@@ -84,29 +84,27 @@ body{
   transition:
   all 1s cubic-bezier(.19,1,.22,1);
 
-  /* TRUE GLASS */
-
   background:
-  rgba(255,255,255,.015);
+  rgba(255,255,255,.02);
 
   border:
   1px solid rgba(255,255,255,.12);
 
   backdrop-filter:
-  blur(16px)
-  saturate(160%);
+  blur(5px)
+  saturate(130%);
 
   -webkit-backdrop-filter:
-  blur(16px)
-  saturate(160%);
+  blur(5px)
+  saturate(130%);
 
   box-shadow:
 
     0 4px 114px
-    rgba(71,64,98,.52),
+    rgba(71,64,98,.45),
 
     0 20px 60px
-    rgba(0,0,0,.18),
+    rgba(0,0,0,.12),
 
     inset 0 1px 0
     rgba(255,255,255,.05);
@@ -138,7 +136,7 @@ body{
 
   overflow:hidden;
 
-  border-radius:34px;
+  border-radius:40px;
 }
 
 .bg-video{
@@ -153,15 +151,12 @@ body{
 
   object-fit:cover;
 
-  /* VERY SOFT */
-
-  opacity:.08;
+  opacity:.15;
 
   filter:
-
-    saturate(.85)
-    brightness(1.05)
-    contrast(.90);
+    saturate(.75)
+    brightness(1)
+    contrast(.88);
 
   transform:scale(1.08);
 
@@ -190,17 +185,16 @@ body{
   background:
   linear-gradient(
     180deg,
-
-    rgba(255,255,255,.06) 0%,
-
-    rgba(238,215,219,.10) 15%,
-
-    rgba(227,127,145,.14) 38%,
-
-    rgba(215,112,144,.12) 70%,
-
-    rgba(215,112,144,.08) 100%
+    rgba(238, 215, 219, 0.64) 43.81%,
+    rgba(227, 127, 129, 0.64) 90.59%,
+    rgba(215, 112, 144, 0.64) 103.69%
   );
+
+  backdrop-filter:
+  blur(6px);
+
+  -webkit-backdrop-filter:
+  blur(6px);
 
   mix-blend-mode:
   screen;
@@ -233,13 +227,13 @@ body{
   1px solid #AD788D;
 
   background:
-  rgba(172,74,120,.85);
+  rgba(128, 19, 70, 0.72);
 
   backdrop-filter:
-  blur(5px);
+  blur(3px);
 
   -webkit-backdrop-filter:
-  blur(5px);
+  blur(3px);
 }
 
 .header h2{
@@ -387,17 +381,20 @@ body{
   border-radius:999px;
 
   background:
-  rgba(139,92,246,.16);
+  rgba(199, 86, 124, 0.76);
 
   border:
-  1px solid rgba(255,255,255,.08);
+  1px solid rgba(255,255,255,0.19);
 
   color:white;
 
   cursor:pointer;
 
   backdrop-filter:
-  blur(10px);
+  blur(8px);
+
+  -webkit-backdrop-filter:
+  blur(8px);
 
   transition:
   all .35s ease;
@@ -412,7 +409,7 @@ body{
   translateY(-2px);
 
   background:
-  rgba(139,92,246,.24);
+  rgba(199, 86, 124, 0.92);
 }
 
 /* =========================
@@ -470,8 +467,6 @@ body{
 
   right:34px;
 
-  /* MOVED UP */
-
   bottom:78px;
 
   width:84px;
@@ -493,6 +488,8 @@ body{
   height:100%;
 }
 
+/* FIXED DIAMOND SECTION */
+
 .front,
 .back{
 
@@ -505,10 +502,13 @@ body{
   align-items:center;
 
   justify-content:center;
+
+  overflow:visible;
 }
 
-.front img,
-.back img{
+/* FRONT DIAMOND */
+
+.front img{
 
   width:100%;
   height:100%;
@@ -516,11 +516,23 @@ body{
   object-fit:contain;
 }
 
+/* BACK DIAMOND */
+
+.back img{
+
+  width:118%;
+  height:118%;
+
+  object-fit:contain;
+
+  transform:scale(1.02);
+}
+
 /* FRONT */
 
 .front{
 
-  overflow:hidden;
+  overflow:visible;
 
   transition:1s;
 }
@@ -631,12 +643,12 @@ body{
     left:50%;
     right:auto;
 
-    bottom:140px;
+    bottom:185px;
 
-    width:92vw;
-    max-width:375px;
+    width:80vw;
+    max-width:345px;
 
-    height:600px;
+    height:450px;
 
     border-radius:28px;
 
@@ -663,8 +675,6 @@ body{
 
     right:20px;
 
-    /* MOVED UP */
-
     bottom:88px;
 
     width:74px;
@@ -677,18 +687,12 @@ body{
 
 <body>
 
-<!-- PAGE BACKGROUND -->
-
 <img
   src="./page-bg.png"
   class="page-bg"
   alt="">
 
-<!-- CHAT -->
-
 <div class="chat" id="chat">
-
-  <!-- VIDEO -->
 
   <div class="video-wrap">
 
@@ -707,11 +711,7 @@ body{
 
   </div>
 
-  <!-- GLASS -->
-
   <div class="gradient"></div>
-
-  <!-- HEADER -->
 
   <div class="header">
 
@@ -722,8 +722,6 @@ body{
     </div>
 
   </div>
-
-  <!-- MESSAGES -->
 
   <div class="messages" id="messages">
 
@@ -756,8 +754,6 @@ body{
 
 </div>
 
-<!-- CRYSTAL -->
-
 <div class="crystal" id="crystal">
 
   <div class="crystal-mask">
@@ -781,8 +777,6 @@ body{
   </div>
 
 </div>
-
-<!-- AUDIO -->
 
 <audio
   id="openSound"
@@ -821,6 +815,8 @@ crystal.addEventListener("click", async ()=>{
 
   try{
 
+    openSound.pause();
+
     openSound.currentTime = 0;
 
     await openSound.play();
@@ -836,6 +832,10 @@ closeBtn.addEventListener("click",()=>{
   chat.classList.remove("show");
 
   crystal.classList.remove("active");
+
+  openSound.pause();
+
+  openSound.currentTime = 0;
 
 });
 
